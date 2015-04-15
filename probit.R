@@ -22,10 +22,6 @@ plot(tavelure.m1,broken=TRUE,add=TRUE)
 #a simplier plot
 plot(tavelure.m1,broken=TRUE)
 
-#still doesn't work
-segments(0,50,ed50val[1],50,lty=2,col="red")
-
-
 #evaluating the ED50
 ed50val<-ED(tavelure.m1,50,interval="delta")
 #this is also working for a list of value for ED10, ED90...
@@ -35,3 +31,15 @@ ed_val<-ED(tavelure.m1,c(10,50,90),interval="delta")
 predict(tavelure.m1,data.frame(dose=ed50val[1]),se.fit=TRUE)
 #values predicted for the set of dose used in the test
 predict(tavelure.m1, interval = "confidence")
+
+library(plotrix)
+plot(tavelure.m1,broken=TRUE)
+abline(v=ed50val[1],col="red",lty=2)
+abline(v=ed50val[3],col="red",lty=3)
+abline(v=ed50val[4],col="red",lty=3)
+
+#still doesn't work
+segments(0,50,ed50val[1],50,lty=2,col="red")
+
+
+
