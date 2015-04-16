@@ -39,7 +39,22 @@ abline(v=ed50val[3],col="red",lty=3)
 abline(v=ed50val[4],col="red",lty=3)
 
 #still doesn't work
+plot(tavelure.m1,broken=TRUE)
 segments(0,50,ed50val[1],50,lty=2,col="red")
-
-
+#the not very good solution (to say the least)
+segments(0.0001,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         0.001,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         lty=2,col="red")
+segments(0.001,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         0.01,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         lty=2,col="red")
+segments(0.01,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         0.1,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         lty=2,col="red")
+segments(0.1,predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         ed50val[1],predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         lty=2,col="red")
+segments(ed50val[1],0,
+         ed50val[1],predict(tavelure.m1,data.frame(dose=ed50val[1])),
+         lty=2,col="red")
 
