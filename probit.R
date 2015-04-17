@@ -1,5 +1,7 @@
 ###############################################################################
+###############################################################################
 #determining IC50, ED50, DL50 ...
+###############################################################################
 ###############################################################################
 
 #loading the library
@@ -8,7 +10,10 @@ library(drc)
 #set the working directory
 setwd("~/work/Rfichiers/Githuber/probit_data")
 
-##example for Venturia inaequalis resistance to Difenoconazol####
+
+###############################################################################
+#example for Venturia inaequalis resistance to Difenoconazol
+###############################################################################
 
 #load the dataset
 testCI50<-read.table("testCI50.txt",header=T,sep="\t")
@@ -60,16 +65,31 @@ segments(ed50val[1],0,
          ed50val[1],predict(tavelure.m1,data.frame(dose=ed50val[1])),
          lty=2,col="red")
 
-
-##example for Myzus persicae resistance to Difenoconazol####
+###############################################################################
+#example for Myzus persicae resistance to Difenoconazol
+###############################################################################
 
 #load the dataset
 testMyz<-read.table("imida_cum_11037_18ter.txt",header=T,sep="\t")
+
+#this model bound min and max with 0 and 1 respectively
 myzus.m1 <- drm(dead/total~dose,weights=total,data=testMyz,fct=LL.2(),
                 type="binomial")
 plot(myzus.m1,type="confidence")
 plot(myzus.m1)
 
-ed50val_myz<-ED(myzus.m1,50,interval="delta",reference="upper")
+ed50val_myz<-ED(myzus.m1,50,interval="delta",reference="control")
+
+#in order to obtain the same results than with priprobit, the Finney equivalent
+#method, we have to remove the constrain the lower bound and chose a log-normal 
+#model instead of a log-logistic model
+myzus.m1 <- drm(dead/total~dose,weights=total,data=testMyz,fct=LN.3u(),
+                type="binomial")
+plot(myzus.m1,type="confidence")
+plot(myzus.m1)
+
+#the ED50 obtained is identical to the one obtained with priprobit, the SD 
+#still differ a little bit
+ed50val_myz<-ED(myzus.m1,50,interval="delta",reference="control")
 
 
