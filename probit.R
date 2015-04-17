@@ -8,6 +8,8 @@ library(drc)
 #set the working directory
 setwd("~/work/Rfichiers/Githuber/probit_data")
 
+##example for Venturia inaequalis resistance to Difenoconazol####
+
 #load the dataset
 testCI50<-read.table("testCI50.txt",header=T,sep="\t")
 
@@ -57,4 +59,17 @@ segments(0.1,predict(tavelure.m1,data.frame(dose=ed50val[1])),
 segments(ed50val[1],0,
          ed50val[1],predict(tavelure.m1,data.frame(dose=ed50val[1])),
          lty=2,col="red")
+
+
+##example for Myzus persicae resistance to Difenoconazol####
+
+#load the dataset
+testMyz<-read.table("imida_cum_11037_18ter.txt",header=T,sep="\t")
+myzus.m1 <- drm(dead/total~dose,weights=total,data=testMyz,fct=LL.2(),
+                type="binomial")
+plot(myzus.m1,type="confidence")
+plot(myzus.m1)
+
+ed50val_myz<-ED(myzus.m1,50,interval="delta",reference="upper")
+
 
