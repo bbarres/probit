@@ -72,7 +72,7 @@ segments(ed50val[1],0,
 #load the dataset
 testMyz<-read.table("imida_cum_11037_18ter.txt",header=T,sep="\t")
 
-#this model bound min and max with 0 and 1 respectively
+#this model constrain min and max with 0 and 1 respectively
 myzus.m1 <- drm(dead/total~dose,weights=total,data=testMyz,fct=LL.2(),
                 type="binomial")
 plot(myzus.m1,type="confidence")
@@ -81,7 +81,7 @@ plot(myzus.m1)
 ed50val_myz<-ED(myzus.m1,50,interval="delta",reference="control")
 
 #in order to obtain the same results than with priprobit, the Finney equivalent
-#method, we have to remove the constrain the lower bound and chose a log-normal 
+#method, we have to remove the constrain on lower bound and chose a log-normal 
 #model instead of a log-logistic model
 myzus.m1 <- drm(dead/total~dose,weights=total,data=testMyz,fct=LN.3u(),
                 type="binomial")
