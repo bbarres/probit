@@ -4,8 +4,9 @@
 ###############################################################################
 ###############################################################################
 
-#loading the library
+#loading the libraries
 library(drc)
+library(plotrix)
 
 #set the working directory
 setwd("~/work/Rfichiers/Githuber/probit_data")
@@ -39,7 +40,6 @@ predict(tavelure.m1,data.frame(dose=ed50val[1]),se.fit=TRUE)
 #values predicted for the set of dose used in the test
 predict(tavelure.m1, interval = "confidence")
 
-library(plotrix)
 plot(tavelure.m1,broken=TRUE)
 abline(v=ed50val[1],col="red",lty=2)
 abline(v=ed50val[3],col="red",lty=3)
@@ -104,7 +104,6 @@ myzus.m4<-drm(dead/total~dose,weights=total,data=testMyz,fct=LL.4(),
               type="binomial")
 plot(myzus.m4)
 ed50val_myz4<-ED(myzus.m4,50,interval="delta")
-
 
 #graphical comparison of the four different models
 plot(myzus.m1,col="green",lty=2)
