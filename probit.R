@@ -24,6 +24,9 @@ tavelure.m1<-drm(mycel~dose,data=testCI50,
                  fct=LL.4(names=c("Slope","Lower Limit","Upper Limit","ED50")))
 summary(tavelure.m1)
 
+#comparison of different model
+mselect(tavelure.m1,list(LN.3u(),LN.4(),W1.3u()))
+
 #plot with 95% confidence interval
 plot(tavelure.m1,broken=TRUE,type="confidence")
 plot(tavelure.m1,broken=TRUE,add=TRUE)
@@ -40,6 +43,7 @@ predict(tavelure.m1,data.frame(dose=ed50val[1]),se.fit=TRUE)
 #values predicted for the set of dose used in the test
 predict(tavelure.m1, interval = "confidence")
 
+#different possible plot for the results
 plot(tavelure.m1,broken=TRUE)
 abline(v=ed50val[1],col="red",lty=2)
 abline(v=ed50val[3],col="red",lty=3)
@@ -110,4 +114,9 @@ plot(myzus.m1,col="green",lty=2)
 plot(myzus.m2,add=TRUE,col="red",lty=2)
 plot(myzus.m3,add=TRUE,col="blue",lty=2)
 plot(myzus.m4,add=TRUE)
+
+#comparison and selection of the model, the smaller the IC, the better, 
+#the higher the lack of fit test, the better
+mselect(myzus.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
+#here the best model is LL.3u
 
