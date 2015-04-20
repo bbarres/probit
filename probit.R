@@ -20,12 +20,16 @@ setwd("~/work/Rfichiers/Githuber/probit_data")
 testCI50<-read.table("testCI50.txt",header=T,sep="\t")
 
 #building of the model
-tavelure.m1<-drm(mycel~dose,data=testCI50,
+tavelure.m1<-drm((mycel-7.5)~dose,data=testCI50,
                  fct=LL.4(names=c("Slope","Lower Limit","Upper Limit","ED50")))
 summary(tavelure.m1)
+plot(tavelure.m1)
+tavelure.m2<-drm((mycel-7.5)~dose,data=testCI50,fct=LL.3())
+summary(tavelure.m2)
+plot(tavelure.m2)
 
 #comparison of different model
-mselect(tavelure.m1,list(LN.3u(),LN.4(),W1.3u()))
+mselect(tavelure.m1,list(LL.3(),LN.3(),LN.4()))
 
 #plot with 95% confidence interval
 plot(tavelure.m1,broken=TRUE,type="confidence")
