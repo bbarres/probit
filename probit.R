@@ -124,3 +124,108 @@ plot(myzus.m4,add=TRUE)
 mselect(myzus.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
 #here the best model is LL.3u
 
+
+###############################################################################
+#Test on the leafhopper (Scaphoïdeus titanus) data of Jérémy
+###############################################################################
+
+#load the first dataset
+ScaTitc<-read.table("0c.txt",header=T,sep="\t")
+
+#here is the same model described in the help of the R package, both
+#the min and max are constrained with 0 and 1, respectively
+ScaTitc.m1<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.2(),
+              type="binomial")
+plot(ScaTitc.m1,type="confidence")
+plot(ScaTitc.m1, main="constraint 0/1")
+ed50val_ScaTitc1<-ED(ScaTitc.m1,50,interval="delta")
+
+#this model constrains only the max (upperlimit) with 1. 
+ScaTitc.m2 <- drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.3u(),
+                type="binomial")
+plot(ScaTitc.m2,type="confidence")
+plot(ScaTitc.m2)
+ed50val_ScaTitc2<-ED(ScaTitc.m2,50,interval="delta",reference="control")
+
+#in order to obtain the same results than with priprobit, the Finney equivalent
+#method, we have to remove the constrain on lowerlimit and chose a log-normal 
+#model instead of a log-logistic model
+ScaTitc.m3<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LN.3u(),
+              type="binomial")
+plot(ScaTitc.m3,type="confidence")
+plot(ScaTitc.m3)
+#the ED50 obtained is identical to the one obtained with priprobit, the SD 
+#still differ a little bit
+ed50val_ScaTitc3<-ED(ScaTitc.m3,50,interval="delta",reference="control")
+
+#another model could the model with all the 4 parameters unconstrained. 
+#Probably the most ubiquituous model that will adapt to most datasets
+ScaTitc.m4<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.4(),
+              type="binomial")
+plot(ScaTitc.m4,type="confidence")
+plot(ScaTitc.m4)
+ed50val_ScaTitc4<-ED(ScaTitc.m4,50,interval="delta")
+
+#graphical comparison of the four different models
+plot(ScaTitc.m1,col="green",lty=2)
+plot(ScaTitc.m2,add=TRUE,col="red",lty=2)
+plot(ScaTitc.m3,add=TRUE,col="blue",lty=2)
+plot(ScaTitc.m4,add=TRUE)
+
+#comparison and selection of the model, the smaller the IC, the better, 
+#the higher the lack of fit test, the better
+mselect(ScaTitc.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
+#here the best model is LL.3u
+
+
+
+
+
+
+#load the second dataset
+ScaTitc<-read.table("0d.txt",header=T,sep="\t")
+
+#here is the same model described in the help of the R package, both
+#the min and max are constrained with 0 and 1, respectively
+ScaTitc.m1<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.2(),
+                type="binomial")
+plot(ScaTitc.m1,type="confidence")
+plot(ScaTitc.m1, main="constraint 0/1")
+ed50val_ScaTitc1<-ED(ScaTitc.m1,50,interval="delta")
+
+#this model constrains only the max (upperlimit) with 1. 
+ScaTitc.m2 <- drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.3u(),
+                  type="binomial")
+plot(ScaTitc.m2,type="confidence")
+plot(ScaTitc.m2)
+ed50val_ScaTitc2<-ED(ScaTitc.m2,50,interval="delta",reference="control")
+
+#in order to obtain the same results than with priprobit, the Finney equivalent
+#method, we have to remove the constrain on lowerlimit and chose a log-normal 
+#model instead of a log-logistic model
+ScaTitc.m3<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LN.3u(),
+                type="binomial")
+plot(ScaTitc.m3,type="confidence")
+plot(ScaTitc.m3)
+#the ED50 obtained is identical to the one obtained with priprobit, the SD 
+#still differ a little bit
+ed50val_ScaTitc3<-ED(ScaTitc.m3,50,interval="delta",reference="control")
+
+#another model could the model with all the 4 parameters unconstrained. 
+#Probably the most ubiquituous model that will adapt to most datasets
+ScaTitc.m4<-drm(dead/total~dose,weights=total,data=ScaTitc,fct=LL.4(),
+                type="binomial")
+plot(ScaTitc.m4,type="confidence")
+plot(ScaTitc.m4)
+ed50val_ScaTitc4<-ED(ScaTitc.m4,50,interval="delta")
+
+#graphical comparison of the four different models
+plot(ScaTitc.m1,col="green",lty=2)
+plot(ScaTitc.m2,add=TRUE,col="red",lty=2)
+plot(ScaTitc.m3,add=TRUE,col="blue",lty=2)
+plot(ScaTitc.m4,add=TRUE)
+
+#comparison and selection of the model, the smaller the IC, the better, 
+#the higher the lack of fit test, the better
+mselect(ScaTitc.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
+#here the best model is LL.3u
