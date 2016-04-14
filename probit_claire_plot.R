@@ -293,13 +293,8 @@ Abbottemp<- 100*((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
 #when Abbott correction lead to negative results, we turn them to 0
 Abbottemp[Abbottemp<0]<-0
 qAbbott<-qnorm(Abbottemp)
-if (temp[temp$dose==0,]$dead!=0) {
-  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
+temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
                 type="binomial")
-} else {
-  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
-                type="binomial")
-}
 plot(temp.mod,xlim=c(0,100000),ylim=c(-3,3),type="obs",broken=TRUE,pch="",
      xlab=expression(paste("Log10(imidacloprid concentration) ",µg.liter^-1)),
      ylab="probit of Abbott corrected \npercentage of mortality",cex.lab=1.5)
@@ -308,6 +303,7 @@ plotemp<-plot(temp.mod,new=FALSE,xlim=c(0,100000),add=TRUE,lwd=0,
      type="none",col=colist[as.numeric(temp$Rgeno[1])],lty=0)
 lines(plotemp[,1],qnorm(plotemp[,2]),col=colist[as.numeric(temp$Rgeno[1])],
       lwd=4)
+
 for (i in 2:dim(clone_gen)[1]) {
   temp<-imida[imida$ind_ID==clone_gen[i,1] & imida$tota!=0,]
   #apply the Abbott correction to the death rate
@@ -316,13 +312,8 @@ for (i in 2:dim(clone_gen)[1]) {
   #when Abbott correction lead to negative results, we turn them to 0
   Abbottemp[Abbottemp<0]<-0
   qAbbott<-qnorm(Abbottemp)
-  if (temp[temp$dose==0,]$dead!=0) {
-    temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
+  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
                   type="binomial")
-  } else {
-    temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
-                  type="binomial")
-  }
   plot(temp.mod,xlim=c(0,100000),type="obs",add=TRUE,pch="")
   points(cbind(temp$dose,qAbbott))
   plotemp<-plot(temp.mod,new=FALSE,xlim=c(0,100000),add=TRUE,lwd=0,
@@ -330,7 +321,6 @@ for (i in 2:dim(clone_gen)[1]) {
   plotemp[plotemp[,2]<0,2]<-0.0001
   lines(plotemp[,1],qnorm(plotemp[,2]),col=colist[as.numeric(temp$Rgeno[1])],
         lwd=4)
-  
   }
 par(op)
 
@@ -346,14 +336,8 @@ Abbottemp<- 100*((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
 #when Abbott's correction lead to negative results, we turn them to 0
 Abbottemp[Abbottemp<0]<-0
 qAbbott<-qnorm(Abbottemp)
-if (temp[temp$dose==0,]$dead!=0) {
-  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
+temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
                 type="binomial")
-} else {
-  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
-                type="binomial")
-}
-
 plot(temp.mod,xlim=c(0,70000),ylim=c(-3,3),type="obs",broken=TRUE,
      xlab=expression(paste("Log10(thiachloprid concentration) ",µg.liter^-1)),
      ylab="probit of Abbott corrected \npercentage of mortality",cex.lab=1.5,pch="")
@@ -362,6 +346,7 @@ plotemp<-plot(temp.mod,new=FALSE,xlim=c(0,100000),add=TRUE,lwd=0,
               type="none",col=colist[as.numeric(temp$Rgeno[1])],lty=0)
 lines(plotemp[,1],qnorm(plotemp[,2]),col=colist[as.numeric(temp$Rgeno[1])],
       lwd=4)
+
 for (i in 2:dim(clone_gen)[1]) {
   temp<-thia[thia$ind_ID==clone_gen[i,1] & thia$total!=0,]
   #apply the Abbott correction to the death rate
@@ -370,13 +355,8 @@ for (i in 2:dim(clone_gen)[1]) {
   #when Abbott's correction lead to negative results, we turn them to 0
   Abbottemp[Abbottemp<0]<-0
   qAbbott<-qnorm(Abbottemp)
-  if (temp[temp$dose==0,]$dead!=0) {
-    temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
+  temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
                   type="binomial")
-  } else {
-    temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.2(),
-                  type="binomial")
-  }
   plot(temp.mod,xlim=c(0,70000),type="obs",add=TRUE,pch="")
   points(cbind(temp$dose,qAbbott))
   plotemp<-plot(temp.mod,xlim=c(0,70000),add=TRUE,lwd=0,
@@ -384,9 +364,7 @@ for (i in 2:dim(clone_gen)[1]) {
   plotemp[plotemp[,2]<0,2]<-0.0001
   lines(plotemp[,1],qnorm(plotemp[,2]),col=colist[as.numeric(temp$Rgeno[1])],
         lwd=4)
-  
-}
-
+  }
 par(op)
 
 
