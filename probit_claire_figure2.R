@@ -20,3 +20,10 @@ plot(ITdata,log="xy",pch=19,bg="black",cex=1.5,cex.lab=1.5,las=1,
 rezlm<-lm(log10(ITdata$thiacloprid.LC50)~log10(ITdata$imidacloprid.LC50))
 abline(rezlm,col="grey60",lwd=2)
 par(op)
+
+#export to pdf file 8 x 6 inches
+
+
+###############################################################################
+#END
+###############################################################################
