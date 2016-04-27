@@ -251,7 +251,7 @@ if (temp[temp$dose==0,]$dead!=0) {
 }
 
 plot(temp.mod,xlim=c(0,70000),ylim=c(0,1),type="obs",broken=TRUE,
-xlab=expression(paste("Log10(thiachloprid concentration) ",µg.liter^-1)),
+xlab=expression(paste("Log10(thiacloprid concentration) ",µg.liter^-1)),
 ylab="Abbott corrected \npercentage of mortality",cex.lab=1.5,pch="")
 points(cbind(temp$dose,Abbottemp))
 plot(temp.mod,xlim=c(0,70000),add=TRUE,lwd=4,
@@ -278,6 +278,8 @@ for (i in 2:dim(clone_gen)[1]) {
 }
 
 par(op)
+
+#export pdf 15 x 8 inches
 
 
 ###############################################################################
