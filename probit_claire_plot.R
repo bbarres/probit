@@ -209,7 +209,7 @@ if (temp[temp$dose==0,]$dead!=0) {
 }
 
 plot(temp.mod,xlim=c(0,70000),ylim=c(0,1),type="obs",broken=TRUE,
-     xlab=expression(paste("Log10(thiachloprid concentration) ",µg.liter^-1)),
+     xlab=expression(paste("Log10(thiacloprid concentration) ",µg.liter^-1)),
      ylab="Percentage of mortality",cex.lab=1.5)
 plot(temp.mod,xlim=c(0,70000),add=TRUE,lwd=4,
      type="none",col=colist[as.numeric(temp$Rgeno[1])])
