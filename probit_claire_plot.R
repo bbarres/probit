@@ -26,7 +26,8 @@ clone_gen<-imida[imida$dose==0, 1:2]
 #green, orange and red associated to the RR, RT and TT genotypes
 levels(imida$Rgeno)<-c(1,2,3)
 colist<-c("green3","darkorange","firebrick3")
-colist<-c("springgreen1","orange2","red3")
+colist<-c("springgreen","darkorange4","red2")
+colist<-c("grey80","grey50","grey10")
 
 #in order to be consistent with the content of the paper, the default model 
 #used for all the different clones will be 'LN.3u()'. This is the equivalent
