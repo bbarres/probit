@@ -36,3 +36,20 @@ droso.m2<-drm(mort/total~dose+age,weights=total,data=droso,fct=LN.3u(),
               type="binomial")
 plot(droso.m2)
 plot(droso.m2,type="confidence")
+
+#to test for the effect of age and sexe, we use a logistic regression model
+
+library(dplyr)
+drosocomb<-droso %>%
+           group_by(age,sexe,dose) %>% 
+           summarise(mort = sum(mort), total=sum(total))
+
+
+test<-glm(cbind((drosocomb$total-drosocomb$mort),drosocomb$mort)~dose*age*sexe,
+          family=binomial(link=probit),data=drosocomb)
+summary(test)
+
+test<-glm(cbind((drosocomb$total-drosocomb$mort),drosocomb$mort)~dose+age*sexe,
+          family=binomial(link=probit),data=drosocomb)
+summary(test)
+
