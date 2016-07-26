@@ -53,3 +53,8 @@ test<-glm(cbind((drosocomb$total-drosocomb$mort),drosocomb$mort)~dose+age*sexe,
           family=binomial(link=probit),data=drosocomb)
 summary(test)
 
+#without combining the test by date
+test<-glm(cbind((droso$total-droso$mort),droso$mort)~dose+age*sexe*date,
+          family=binomial(link=probit),data=droso)
+summary(test)
+
