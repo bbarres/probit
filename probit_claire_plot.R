@@ -31,7 +31,7 @@ colist<-c("grey80","grey50","grey10")
 
 #in order to be consistent with the content of the paper, the default model 
 #used for all the different clones will be 'LN.3u()'. This is the equivalent
-#to the Finney method. There is no constrain on the lowerlimit and chose a 
+#to the Finney method. There is no constrain on the lowerlimit and a 
 #log-normal link is chosen. 
 temp<-imida[imida$ind_ID==clone_gen[1,1] & imida$total!=0,]
 temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
