@@ -240,8 +240,8 @@ par(op)
 op<-par(mar=c(5.1,5.5,2.1,2.1))
 temp<-thia[thia$ind_ID==clone_gen[26,1] & thia$total!=0,]
 #apply the Abbott correction to the death rate
-Abbottemp<- 100*((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
-  (100-(temp[1,5]/temp[1,4]))
+Abbottemp<- 100*(((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
+  (100-(temp[1,5]/temp[1,4])*100))
 #when Abbott's correction lead to negative results, we turn them to 0
 Abbottemp[Abbottemp<0]<-0
 if (temp[temp$dose==0,]$dead!=0) {
