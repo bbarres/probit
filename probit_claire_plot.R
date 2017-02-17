@@ -31,7 +31,7 @@ colist<-c("grey80","grey50","grey10")
 
 #in order to be consistent with the content of the paper, the default model 
 #used for all the different clones will be 'LN.3u()'. This is the equivalent
-#to the Finney method. There is no constrain on the lowerlimit and chose a 
+#to the Finney method. There is no constrain on the lowerlimit and a 
 #log-normal link is chosen. 
 temp<-imida[imida$ind_ID==clone_gen[1,1] & imida$total!=0,]
 temp.mod<-drm(dead/total~dose,weights=total,data=temp,fct=LN.3u(),
@@ -240,8 +240,8 @@ par(op)
 op<-par(mar=c(5.1,5.5,2.1,2.1))
 temp<-thia[thia$ind_ID==clone_gen[26,1] & thia$total!=0,]
 #apply the Abbott correction to the death rate
-Abbottemp<- 100*((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
-  (100-(temp[1,5]/temp[1,4]))
+Abbottemp<- 100*(((temp[,5]/temp[,4])-(temp[1,5]/temp[1,4]))/
+  (100-(temp[1,5]/temp[1,4])*100))
 #when Abbott's correction lead to negative results, we turn them to 0
 Abbottemp[Abbottemp<0]<-0
 if (temp[temp$dose==0,]$dead!=0) {
