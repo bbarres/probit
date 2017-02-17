@@ -12,9 +12,8 @@ library(plotrix)
 setwd("~/work/Rfichiers/Githuber/probit_data")
 
 
-
 ###############################################################################
-#example for Venturia inaequalis resistance to Difenoconazol
+#example for Drosophila suzukii resistance to Difenoconazol
 ###############################################################################
 
 #load the dataset
