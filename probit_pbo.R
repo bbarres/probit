@@ -553,6 +553,8 @@ plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
 plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
 plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
 
+par(op)
+
 #plot by date
 op<-par(mfrow=c(5,1))
 plot(myzus.sspbo,type="obs",main=paste(names(summary(myzpbo[,2]))[4],
@@ -589,32 +591,53 @@ par(op)
 
 
 
-#sum up the results of the different tests####
+###############################################################################
+#sum up the results of the different tests
+###############################################################################
 
+
+#load the dataset
+myzpbo<-read.table("pbo_280317.txt",header=T,sep="\t")
 myzpbo<-cbind(myzpbo,"perc"=myzpbo$dead*100/myzpbo$total)
 myzpbo<-cbind(myzpbo,"testID"=paste(myzpbo$clone,myzpbo$date))
-#concatenation of the data
-agraa<-aggregate(cbind(dead,total)~dose+pesticide+clone,data=myzpbo,"sum")
-agraa<-cbind(agraa,"perc"=agraa$dead*100/agraa$total)
-barplot(as.matrix(agraa[1:11,c("dead","total","perc")]),beside=TRUE)
-plot(agraa$dead/agraa$total)
 
-recapall<-myzpbo[myzpbo$dose==0 & myzpbo$pesticide=="thiaclopride",
-                 c("testID","perc")]
-recapall<-cbind(recapall,"total"=aggregate(cbind(dead,total)~pesticide+clone+date,
-          data=myzpbo[myzpbo$pesticide=="thiaclopride",],"sum")$total)
-recapall<-cbind(recapall,"percpbo"=myzpbo[myzpbo$dose==0 & 
-                                  myzpbo$pesticide!="thiaclopride",
-                                c("perc")])
-recapall<-cbind(recapall,"totalpbo"=aggregate(cbind(dead,total)~pesticide+clone+date,
-          data=myzpbo[myzpbo$pesticide!="thiaclopride",],"sum")$total)
+#building a table summarising the results of the different repetition
+recaprepet<-aggregate(dose~date+clone,
+                      data=myzpbo[myzpbo$pesticide=="thiaclopride",],"mean")
+recaprepet<-cbind("testID"=paste(recaprepet$clone,recaprepet$date),
+                  recaprepet[,2:1])
+#data of test with only thiaclopride
+recaprepet<-cbind(recaprepet,"mort rate T- thia"=
+  (aggregate(dead~date+clone,data=myzpbo[myzpbo$pesticide=="thiaclopride" 
+                                      & myzpbo$dose==0,],"sum")$dead *100 / 
+   aggregate(total~date+clone,data=myzpbo[myzpbo$pesticide=="thiaclopride" 
+                                      & myzpbo$dose==0,],"sum")$total)
+)
+recaprepet<-cbind(recaprepet,"number T- thia"= aggregate(total~date+clone,
+                  data=myzpbo[myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$dose==0,],"sum")$total)
+recaprepet<-cbind(recaprepet,"number tested thia"= aggregate(total~date+clone,
+                  data=myzpbo[myzpbo$pesticide=="thiaclopride",],"sum")$total)
+#data of test with pbo added to thiaclopride
+recaprepet<-cbind(recaprepet,"mort rate T- pbo"=
+  (aggregate(dead~date+clone,data=myzpbo[myzpbo$pesticide!="thiaclopride" 
+                                      & myzpbo$dose==0,],"sum")$dead *100 / 
+   aggregate(total~date+clone,data=myzpbo[myzpbo$pesticide!="thiaclopride" 
+                                      & myzpbo$dose==0,],"sum")$total)
+)
+recaprepet<-cbind(recaprepet,"number T- pbo"= aggregate(total~date+clone,
+                  data=myzpbo[myzpbo$pesticide!="thiaclopride" & 
+                                myzpbo$dose==0,],"sum")$total)
+recaprepet<-cbind(recaprepet,"number tested pbo"= aggregate(total~date+clone,
+                  data=myzpbo[myzpbo$pesticide!="thiaclopride",],"sum")$total)
+
 
 
 #let's evaluate the different model for each clone with and without pbo
 DL50<-c()
 for (i in 1:19){
 myzus.sspbo<-drm(dead/total~dose,weights=total,
-                 data=myzpbo[myzpbo$testID==recapall$testID[i] & 
+                 data=myzpbo[myzpbo$testID==recaprepet$testID[i] & 
                                myzpbo$pesticide=="thiaclopride",],
                  fct=LN.2(),
                  type="binomial")
@@ -623,9 +646,9 @@ DL50<-c(DL50,ed50val[1])
 }
 
 DL50pbo<-c()
-for (i in 1:13){
+for (i in 1:5){
   myzus.sspbo<-drm(dead/total~dose,weights=total,
-                   data=myzpbo[myzpbo$testID==recapall$testID[i] & 
+                   data=myzpbo[myzpbo$testID==recaprepet$testID[i] & 
                                  myzpbo$pesticide!="thiaclopride",],
                    fct=LN.2(),
                    type="binomial")
@@ -633,9 +656,9 @@ for (i in 1:13){
   DL50pbo<-c(DL50pbo,ed50val[1])
 }
 DL50pbo<-c(DL50pbo,NA)
-for (i in 15:19){
+for (i in 7:19){
   myzus.sspbo<-drm(dead/total~dose,weights=total,
-                   data=myzpbo[myzpbo$testID==recapall$testID[i] & 
+                   data=myzpbo[myzpbo$testID==recaprepet$testID[i] & 
                                  myzpbo$pesticide!="thiaclopride",],
                    fct=LN.2(),
                    type="binomial")
@@ -643,11 +666,82 @@ for (i in 15:19){
   DL50pbo<-c(DL50pbo,ed50val[1])
 }
 
-recapall<-cbind(recapall,"DL50"=DL50,"DL50pbo"=DL50pbo)
-recapall<-cbind(recapall,"FI"=recapall$DL50/recapall$DL50pbo)
-recapall[order(recapall$testID),]
-write.table(recapall[order(recapall$testID),], file="tablerecap.txt",
-            sep="\t",quote=FALSE,row.names=FALSE)
+recaprepet<-cbind(recaprepet,"DL50"=DL50,"DL50pbo"=DL50pbo)
+recaprepet<-cbind(recaprepet,"Synergy"=recaprepet$DL50/recaprepet$DL50pbo)
+recaprepet[order(recaprepet$clone,as.Date(recaprepet$date,"%d-%b-%y")),]
+write.table(recaprepet[order(recaprepet$clone,
+                             as.Date(recaprepet$date,"%d-%b-%y")),],
+            file="tablerecap2.txt",sep="\t",quote=FALSE,row.names=FALSE)
 
-par(op)
+
+###############################################################################
+#building the tables to make an analyze that merges the different repetition
+###############################################################################
+
+byclone<-aggregate(cbind(dead,total)~dose+pesticide+clone,data=myzpbo,"sum")
+
+#without pbo
+DL50clone<-c()
+modelclone<-vector("list",4)
+for (i in 1:4){
+  myzus.sspbo<-drm(dead/total~dose,weights=total,
+                   data=byclone[byclone$clone==levels(byclone$clone)[i] & 
+                                  byclone$pesticide=="thiaclopride",],
+                   fct=LN.2(),
+                   type="binomial")
+  modelclone[[i]]<-myzus.sspbo
+  ed50val<-ED(myzus.sspbo,50,interval="delta",reference="control")
+  DL50clone<-c(DL50clone,ed50val[1])
+}
+plot(modelclone[[1]],main=levels(byclone$clone)[1],type="bars",
+     col="blue",ylim=c(-0.05,1.05))
+plot(modelclone[[2]],type="average",col="green3",add=TRUE)
+plot(modelclone[[3]],type="confidence",col="grey30",add=TRUE)
+plot(modelclone[[4]],type="all",col="orange",add=TRUE)
+
+#with pbo
+DL50clonepbo<-c()
+modelclonepbo<-vector("list",4)
+for (i in 1:4){
+  myzus.sspbo<-drm(dead/total~dose,weights=total,
+                   data=byclone[byclone$clone==levels(byclone$clone)[i] & 
+                                  byclone$pesticide!="thiaclopride",],
+                   fct=LN.2(),
+                   type="binomial")
+  modelclonepbo[[i]]<-myzus.sspbo
+  ed50val<-ED(myzus.sspbo,50,interval="delta",reference="control")
+  DL50clonepbo<-c(DL50clonepbo,ed50val[1])
+}
+plot(modelclonepbo[[1]],main=levels(byclone$clone)[1],type="bars",
+     col="blue",ylim=c(-0.05,1.05))
+plot(modelclonepbo[[2]],type="average",col="green3",add=TRUE)
+plot(modelclonepbo[[3]],type="confidence",col="grey30",add=TRUE)
+plot(modelclonepbo[[4]],type="all",col="orange",add=TRUE)
+
+
+#because there was important "natural" mortality in some tests, we remove 
+#repetitions with a mortality rate greater than 25 % in either modality 
+#(with or without pbo)
+
+listrepcor<-recaprepet[c(which(recaprepet$`mort rate T- thia`>25),
+                         which(recaprepet$`mort rate T- pbo` >25)),"testID"]
+byclonecor<-aggregate(cbind(dead,total)~dose+pesticide+clone,
+                      data=myzpbo[!myzpbo$testID %in% listrepcor,],"sum")
+
+#we export the table
+write.table(byclonecor,file="effectifpartest.txt",sep="\t",quote=FALSE,
+            row.names=FALSE)
+
+#another way which is simplier to do the model for every different clone
+myzus.sspbocor<-drm(dead/total~dose,weights=total,clone,
+                    data=byclonecor[byclonecor$pesticide=="thiaclopride",],
+                    fct=LN.2(),type="binomial")
+plot(myzus.sspbocor)
+DL50clonecor<-ED(myzus.sspbocor,50,interval="delta",reference="control")
+
+myzus.avpbocor<-drm(dead/total~dose,weights=total,clone,
+                    data=byclonecor[byclonecor$pesticide!="thiaclopride",],
+                    fct=LN.2(),type="binomial")
+plot(myzus.avpbocor,add=TRUE,col="red")
+DL50clonepbocor<-ED(myzus.avpbocor,50,interval="delta",reference="control")
 
