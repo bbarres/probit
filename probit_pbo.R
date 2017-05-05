@@ -745,3 +745,431 @@ myzus.avpbocor<-drm(dead/total~dose,weights=total,clone,
 plot(myzus.avpbocor,add=TRUE,col="red")
 DL50clonepbocor<-ED(myzus.avpbocor,50,interval="delta",reference="control")
 
+
+
+###############################################################################
+#New set of clones: comparison between repetitions
+###############################################################################
+
+#load the dataset
+myzpbo<-read.table("pbo_050517.txt",header=T,sep="\t")
+
+
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                               myzpbo$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(myzpbo[,2]))[1])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                               myzpbo$pesticide=="thiaclopride_PBO",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+
+#curves for each repetition without PBO
+myzus.sspbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.sspbo,type="obs",main=names(summary(myzpbo[,2]))[1])
+plot(myzus.sspbo1,type="confidence",add=TRUE,col="blue")
+plot(myzus.sspbo1,type="obs",add=TRUE,col="blue")
+plot(myzus.sspbo2,type="confidence",add=TRUE,col="blue2")
+plot(myzus.sspbo2,type="obs",add=TRUE,col="blue2")
+plot(myzus.sspbo3,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo3,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="obs",add=TRUE,col="blue3")
+
+
+#curves for each repetition with PBO
+myzus.avpbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[1] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.avpbo1,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo1,type="obs",add=TRUE,col="red")
+plot(myzus.avpbo2,type="confidence",add=TRUE,col="red2")
+plot(myzus.avpbo2,type="obs",add=TRUE,col="red2")
+plot(myzus.avpbo3,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo3,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
+
+
+
+#for the second clone
+#let's evaluate the different model for each clone with and without pbo####
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                               myzpbo$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(myzpbo[,2]))[2])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                               myzpbo$pesticide=="thiaclopride_PBO",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+
+#curves for each repetition without PBO
+myzus.sspbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.sspbo,type="obs",main=names(summary(myzpbo[,2]))[2])
+plot(myzus.sspbo1,type="confidence",add=TRUE,col="blue")
+plot(myzus.sspbo1,type="obs",add=TRUE,col="blue")
+plot(myzus.sspbo2,type="confidence",add=TRUE,col="blue2")
+plot(myzus.sspbo2,type="obs",add=TRUE,col="blue2")
+plot(myzus.sspbo3,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo3,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="obs",add=TRUE,col="blue3")
+
+#curves for each repetition with PBO
+myzus.avpbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[2] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.avpbo1,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo1,type="obs",add=TRUE,col="red")
+plot(myzus.avpbo2,type="confidence",add=TRUE,col="red2")
+plot(myzus.avpbo2,type="obs",add=TRUE,col="red2")
+plot(myzus.avpbo3,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo3,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
+
+
+
+#let's analysis the third clone
+#let's evaluate the different model for each clone with and without pbo####
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                               myzpbo$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(myzpbo[,2]))[3])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                               myzpbo$pesticide=="thiaclopride_PBO",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+#curves for each repetition without PBO
+myzus.sspbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.sspbo,type="obs",main=names(summary(myzpbo[,2]))[3])
+plot(myzus.sspbo1,type="confidence",add=TRUE,col="blue")
+plot(myzus.sspbo1,type="obs",add=TRUE,col="blue")
+plot(myzus.sspbo2,type="confidence",add=TRUE,col="blue2")
+plot(myzus.sspbo2,type="obs",add=TRUE,col="blue2")
+plot(myzus.sspbo3,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo3,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="obs",add=TRUE,col="blue3")
+
+#curves for each repetition with PBO
+myzus.avpbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.avpbo1,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo1,type="obs",add=TRUE,col="red")
+plot(myzus.avpbo2,type="confidence",add=TRUE,col="red2")
+plot(myzus.avpbo2,type="obs",add=TRUE,col="red2")
+plot(myzus.avpbo3,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo3,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
+
+
+#for the fourth clone
+#let's evaluate the different model for each clone with and without pbo####
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                               myzpbo$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(myzpbo[,2]))[4])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                               myzpbo$pesticide=="thiaclopride_PBO",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+#curves for each repetition without PBO
+myzus.sspbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.sspbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.sspbo,type="obs",main=names(summary(myzpbo[,2]))[4])
+plot(myzus.sspbo1,type="confidence",add=TRUE,col="blue")
+plot(myzus.sspbo1,type="obs",add=TRUE,col="blue")
+plot(myzus.sspbo2,type="confidence",add=TRUE,col="blue2")
+plot(myzus.sspbo2,type="obs",add=TRUE,col="blue2")
+plot(myzus.sspbo3,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo3,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo4,type="obs",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="confidence",add=TRUE,col="blue3")
+plot(myzus.sspbo5,type="obs",add=TRUE,col="blue3")
+
+#curves for each repetition with PBO
+myzus.avpbo1<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[1],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo2<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[2],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo3<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[3],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo4<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[4],],
+                  fct=LN.2(),
+                  type="binomial")
+myzus.avpbo5<-drm(dead/total~dose,weights=total,
+                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                                myzpbo$pesticide=="thiaclopride_PBO" & 
+                                myzpbo$date==levels(myzpbo$date)[5],],
+                  fct=LN.2(),
+                  type="binomial")
+plot(myzus.avpbo1,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo1,type="obs",add=TRUE,col="red")
+plot(myzus.avpbo2,type="confidence",add=TRUE,col="red2")
+plot(myzus.avpbo2,type="obs",add=TRUE,col="red2")
+plot(myzus.avpbo3,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo3,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
+plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
+
