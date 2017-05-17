@@ -752,7 +752,7 @@ DL50clonepbocor<-ED(myzus.avpbocor,50,interval="delta",reference="control")
 ###############################################################################
 
 #load the dataset
-myzpbo<-read.table("pbo_050517.txt",header=T,sep="\t")
+myzpbo<-read.table("pbo_120517.txt",header=T,sep="\t")
 
 
 myzus.sspbo<-drm(dead/total~dose,weights=total,
@@ -1172,4 +1172,40 @@ plot(myzus.avpbo4,type="confidence",add=TRUE,col="red3")
 plot(myzus.avpbo4,type="obs",add=TRUE,col="red3")
 plot(myzus.avpbo5,type="confidence",add=TRUE,col="red3")
 plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
+
+#the results for the "fourth" date (in fact the third repetition of the test) 
+#are not very good. So we remove them for the final analysis
+levels(myzpbo$date)[4]
+myzpbofinal<-myzpbo[myzpbo$date!=levels(myzpbo$date)[4],]
+
+
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                               myzpbo$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(myzpbo[,2]))[4])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[4] & 
+                               myzpbo$pesticide=="thiaclopride_PBO",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+
+#another way which is simplier to do the model for every different clone
+myzus.sspbofin<-drm(dead/total~dose,weights=total,clone,
+                    data=myzpbofinal[myzpbofinal$pesticide=="thiaclopride",],
+                    fct=LN.3u(),type="binomial")
+plot(myzus.sspbofin)
+DL50clonefin<-ED(myzus.sspbofin,50,interval="delta",reference="control")
+
+myzus.avpbofin<-drm(dead/total~dose,weights=total,clone,
+                    data=myzpbofinal[myzpbofinal$pesticide!="thiaclopride",],
+                    fct=LN.3u(),type="binomial")
+plot(myzus.avpbofin,add=TRUE,col="red")
+DL50clonepbofin<-ED(myzus.avpbofin,50,interval="delta",reference="control")
 
