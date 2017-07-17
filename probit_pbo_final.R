@@ -23,6 +23,12 @@ myzpbo<-read.table("final_av_ss_pbo.txt",header=T,sep="\t")
 #scale
 myzpbo<-myzpbo[myzpbo$include!="n",]
 
+#let's sum the number of individual tested per dose for each treatment 
+#to check the representativeness of the obtained results
+checkdat<-aggregate(cbind(dead,total)~dose+pesticide+clone,data=myzpbo,"sum")
+write.table(checkdat,file="checkdat.txt",sep="\t",row.names=FALSE)
+
+
 
 #for the first clone of the series in 2015, 2016####
 clone1<-myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[8],]
