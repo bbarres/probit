@@ -14,7 +14,7 @@ setwd("~/work/Rfichiers/Githuber/probit_data")
 
 
 ###############################################################################
-#comparison between repetitions
+#Evaluating the DL50 for the different clones and different repetitions
 ###############################################################################
 
 #load the dataset
@@ -2394,3 +2394,159 @@ plot(myzus.avpbo2,type="confidence",add=TRUE,col="red2")
 plot(myzus.avpbo2,type="obs",add=TRUE,col="red2",pch=19)
 plot(myzus.avpbo3,type="confidence",add=TRUE,col="red3")
 plot(myzus.avpbo3,type="obs",add=TRUE,col="red3",pch=19)
+
+
+###############################################################################
+#Reference clone: estimation for repetitions pooled from different series
+###############################################################################
+
+#for the first reference clone 11-037-001####
+ref11_037_001<-myzpbo[myzpbo$clone=="11-037-001",]
+ref11_037_001<-drop.levels(ref11_037_001)
+
+cloneX<-ref11_037_001[ref11_037_001$clone==names(summary(ref11_037_001[,2]))[1],]
+cloneX<-drop.levels(cloneX)
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(ref11_037_001[,2]))[1])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide!="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+checkclo<-aggregate(cbind(dead,total)~dose+pesticide,data=cloneX,"sum")
+bilan2<-data.frame("clone_ID"=levels(cloneX$clone),
+                  "DL50"=ED(myzus.sspbo,50,interval="delta",
+                            reference="control")[[1]],
+                  "DL50 SD"=ED(myzus.sspbo,50,interval="delta",
+                               reference="control")[[2]],
+                  "mort 0"=checkclo[checkclo$dose==0 & 
+                                      checkclo$pesticide=="thiaclopride",]$dead/
+                    checkclo[checkclo$dose==0 & 
+                               checkclo$pesticide=="thiaclopride",]$total*100,
+                  "n mean"=mean(checkclo[checkclo$pesticide==
+                                           "thiaclopride",]$total),
+                  "n min"=min(checkclo[checkclo$pesticide==
+                                         "thiaclopride",]$total),
+                  "DL50 pbo"=ED(myzus.avpbo,50,interval="delta",
+                                reference="control")[[1]],
+                  "DL50 pbo SD"=ED(myzus.avpbo,50,interval="delta",
+                                   reference="control")[[2]],
+                  "mort 0 pbo"=checkclo[checkclo$dose==0 & 
+                                          checkclo$pesticide!="thiaclopride",]$dead/
+                    checkclo[checkclo$dose==0 & 
+                               checkclo$pesticide!="thiaclopride",]$total*100,
+                  "n mean pbo"=mean(checkclo[checkclo$pesticide!=
+                                               "thiaclopride",]$total),
+                  "n min pbo"=min(checkclo[checkclo$pesticide!=
+                                             "thiaclopride",]$total))
+bilan2
+
+
+#for the second reference clone 5191A####
+ref5191A<-myzpbo[myzpbo$clone=="5191A",]
+ref5191A<-drop.levels(ref5191A)
+
+cloneX<-ref5191A[ref5191A$clone==names(summary(ref5191A[,2]))[1],]
+cloneX<-drop.levels(cloneX)
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(ref5191A[,2]))[1])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide!="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+checkclo<-aggregate(cbind(dead,total)~dose+pesticide,data=cloneX,"sum")
+bilan2<-rbind(bilan2,
+             data.frame("clone_ID"=levels(cloneX$clone),
+                        "DL50"=ED(myzus.sspbo,50,interval="delta",
+                                  reference="control")[[1]],
+                        "DL50 SD"=ED(myzus.sspbo,50,interval="delta",
+                                     reference="control")[[2]],
+                        "mort 0"=checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide=="thiaclopride",]$dead/
+                          checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide=="thiaclopride",]$total*100,
+                        "n mean"=mean(checkclo[checkclo$pesticide==
+                                                 "thiaclopride",]$total),
+                        "n min"=min(checkclo[checkclo$pesticide==
+                                               "thiaclopride",]$total),
+                        "DL50 pbo"=ED(myzus.avpbo,50,interval="delta",
+                                      reference="control")[[1]],
+                        "DL50 pbo SD"=ED(myzus.avpbo,50,interval="delta",
+                                         reference="control")[[2]],
+                        "mort 0 pbo"=checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide!="thiaclopride",]$dead/
+                          checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide!="thiaclopride",]$total*100,
+                        "n mean pbo"=mean(checkclo[checkclo$pesticide!=
+                                                     "thiaclopride",]$total),
+                        "n min pbo"=min(checkclo[checkclo$pesticide!=
+                                                   "thiaclopride",]$total)))
+bilan2
+
+
+#for the third reference clone 13-001-032####
+ref13_001_032<-myzpbo[myzpbo$clone=="13-001-032",]
+ref13_001_032<-drop.levels(ref13_001_032)
+
+cloneX<-ref13_001_032[ref13_001_032$clone==names(summary(ref13_001_032[,2]))[1],]
+cloneX<-drop.levels(cloneX)
+myzus.sspbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide=="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.sspbo,type="confidence",main=names(summary(ref13_001_032[,2]))[1])
+plot(myzus.sspbo,type="obs",add=TRUE)
+
+myzus.avpbo<-drm(dead/total~dose,weights=total,
+                 data=cloneX[cloneX$pesticide!="thiaclopride",],
+                 fct=LN.2(),
+                 type="binomial")
+plot(myzus.avpbo,type="confidence",add=TRUE,col="red")
+plot(myzus.avpbo,type="obs",add=TRUE,col="red")
+
+checkclo<-aggregate(cbind(dead,total)~dose+pesticide,data=cloneX,"sum")
+bilan2<-rbind(bilan2,
+             data.frame("clone_ID"=levels(cloneX$clone),
+                        "DL50"=ED(myzus.sspbo,50,interval="delta",
+                                  reference="control")[[1]],
+                        "DL50 SD"=ED(myzus.sspbo,50,interval="delta",
+                                     reference="control")[[2]],
+                        "mort 0"=checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide=="thiaclopride",]$dead/
+                          checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide=="thiaclopride",]$total*100,
+                        "n mean"=mean(checkclo[checkclo$pesticide==
+                                                 "thiaclopride",]$total),
+                        "n min"=min(checkclo[checkclo$pesticide==
+                                               "thiaclopride",]$total),
+                        "DL50 pbo"=ED(myzus.avpbo,50,interval="delta",
+                                      reference="control")[[1]],
+                        "DL50 pbo SD"=ED(myzus.avpbo,50,interval="delta",
+                                         reference="control")[[2]],
+                        "mort 0 pbo"=checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide!="thiaclopride",]$dead/
+                          checkclo[checkclo$dose==0 & 
+                          checkclo$pesticide!="thiaclopride",]$total*100,
+                        "n mean pbo"=mean(checkclo[checkclo$pesticide!=
+                                                     "thiaclopride",]$total),
+                        "n min pbo"=min(checkclo[checkclo$pesticide!=
+                                                   "thiaclopride",]$total)))
+bilan2
+write.table(bilan2,file="bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
+
+
