@@ -2550,3 +2550,24 @@ bilan2
 write.table(bilan2,file="bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
 
 
+
+
+
+###############################################################################
+#generalized linear model to explain the DL50
+###############################################################################
+
+library(lme4)
+library(nlme)
+
+regredat<-read.table(file="Yanisregre.dat",header=TRUE,sep="\t")
+modDL<-glm(log(DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat)
+modDL<-glm((DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat,
+           family=gaussian(link="log"))
+summary(modDL)
+
+#mixed model with the clone identity as a random factor
+mmodDL<-lme(log(DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat,
+            random= ~1|ID)
+summary(mmodDL)
+mmodDL<-lmer(log(DL50)~R81T*copies*PBO + (1|ID),data=regredat)
