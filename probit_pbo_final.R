@@ -2559,15 +2559,32 @@ write.table(bilan2,file="bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
 
 library(lme4)
 library(nlme)
+detach("package:drc", unload=TRUE) #otherwise it is messing with "family" !
 
 regredat<-read.table(file="Yanisregre.dat",header=TRUE,sep="\t")
-modDL<-glm(log(DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat)
-modDL<-glm((DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat,
+modDL<-glm((DL50)~R81T+copies+PBO,data=regredat,
            family=gaussian(link="log"))
 summary(modDL)
+plot(modDL)
+
+modDL<-glm((DL50)~R81T+copies+PBO+R81T:copies,data=regredat,
+          family=gaussian(link="log"))
+summary(modDL)
+plot(modDL)
 
 #mixed model with the clone identity as a random factor
 mmodDL<-lme(log(DL50)~R81T*copies*PBO-R81T:copies:PBO,data=regredat,
+            random= ~1|ID,family=gaussian(link="log"))
+mmodDL<-lme(log(DL50)~R81T+copies+PBO,data=regredat,
             random= ~1|ID)
 summary(mmodDL)
 mmodDL<-lmer(log(DL50)~R81T*copies*PBO + (1|ID),data=regredat)
+
+
+#generalyzed linear mixed model with the clone identity as a random factor
+PQL<-glmmPQL(DL50~R81T+copies+PBO+R81T:copies, ~1|ID,
+             family=gaussian(link="log"),data=regredat,
+             verbose = FALSE)
+summary(PQL)
+plot(PQL)
+
