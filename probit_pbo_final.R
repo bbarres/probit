@@ -2557,11 +2557,36 @@ write.table(bilan2,file="bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
 #generalized linear model to explain the DL50
 ###############################################################################
 
+#loading the libraries
 library(lme4)
 library(nlme)
 detach("package:drc", unload=TRUE) #otherwise it is messing with "family" !
 
+#loading the dataset
 regredat<-read.table(file="Yanisregre.dat",header=TRUE,sep="\t")
+
+
+#generalyzed linear mixed model with the clone identity as a random factor
+PQL<-glmmPQL(DL50~R81T+copies+PBO+R81T:copies+R81T:PBO+copies:PBO, ~1|ID,
+             family=gaussian(link="log"),data=regredat,
+             verbose = FALSE)
+summary(PQL)
+
+#we remove the interaction between the R81T genotype and the PBO
+PQL<-glmmPQL(DL50~R81T+copies+PBO+R81T:copies+copies:PBO, ~1|ID,
+             family=gaussian(link="log"),data=regredat,
+             verbose = FALSE)
+summary(PQL)
+
+#we remove the interaction between the copy number and the PBO
+PQL<-glmmPQL(DL50~R81T+copies+PBO+R81T:copies, ~1|ID,
+             family=gaussian(link="log"),data=regredat,
+             verbose = FALSE)
+summary(PQL)
+plot(PQL)
+
+
+#some additional analysis with other glm and glmm
 modDL<-glm((DL50)~R81T+copies+PBO,data=regredat,
            family=gaussian(link="log"))
 summary(modDL)
@@ -2580,11 +2605,4 @@ mmodDL<-lme(log(DL50)~R81T+copies+PBO,data=regredat,
 summary(mmodDL)
 mmodDL<-lmer(log(DL50)~R81T*copies*PBO + (1|ID),data=regredat)
 
-
-#generalyzed linear mixed model with the clone identity as a random factor
-PQL<-glmmPQL(DL50~R81T+copies+PBO+R81T:copies, ~1|ID,
-             family=gaussian(link="log"),data=regredat,
-             verbose = FALSE)
-summary(PQL)
-plot(PQL)
 
