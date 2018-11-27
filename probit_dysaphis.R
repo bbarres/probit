@@ -8,12 +8,9 @@
 library(drc)
 library(plotrix)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 #load the dataset
-dysaphis<-read.table("dysaphis.txt",header=T,sep="\t")
+dysaphis<-read.table("data/dysaphis.txt",header=T,sep="\t")
 
 #reformating the data by "merging" the different wells of the same repetition
 dysaphis<-cbind(aggregate(dead~dose+date+clone+pesticide,data=dysaphis,"sum"), 
@@ -76,7 +73,7 @@ plot(dysa_mod3,type="confidence",col="blue",add=TRUE)
 ###############################################################################
 
 #load the dataset
-dysa<-read.table("dysa_080917.txt",header=T,sep="\t")
+dysa<-read.table("data/dysa_080917.txt",header=T,sep="\t")
 
 #reformating the data by "merging" the different wells of the same repetition
 dysa2<-cbind(aggregate(dead~dose+date+clone+pesticide,data=dysa,"sum"), 

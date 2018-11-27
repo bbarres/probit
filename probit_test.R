@@ -8,16 +8,13 @@
 library(drc)
 library(plotrix)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #example for Venturia inaequalis resistance to Difenoconazol
 ###############################################################################
 
 #load the dataset
-testCI50<-read.table("testCI50.txt",header=T,sep="\t")
+testCI50<-read.table("data/testCI50.txt",header=T,sep="\t")
 
 #building of the model
 tavelure.m1<-drm((mycel-7.5)~dose,data=testCI50,
@@ -79,7 +76,7 @@ segments(ed50val[1],0,
 ###############################################################################
 
 #load the dataset
-testMyz<-read.table("imida_cum_11037_18ter.txt",header=T,sep="\t")
+testMyz<-read.table("data/imida_cum_11037_18ter.txt",header=T,sep="\t")
 
 #here is the same model described in the help of the R package, both
 #the min and max are constrained with 0 and 1, respectively
@@ -130,7 +127,7 @@ mselect(myzus.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
 ###############################################################################
 
 #load the first dataset
-ScaTitc<-read.table("0c.txt",header=T,sep="\t")
+ScaTitc<-read.table("data/0c.txt",header=T,sep="\t")
 
 #here is the same model described in the help of the R package, both
 #the min and max are constrained with 0 and 1, respectively
@@ -180,7 +177,7 @@ mselect(ScaTitc.m1,list(LL.3u(),LN.3u(),LL.4(),LN.4(),W1.3u(),W2.3u()))
 
 
 #load the second dataset
-ScaTitc<-read.table("0d.txt",header=T,sep="\t")
+ScaTitc<-read.table("data/0d.txt",header=T,sep="\t")
 
 #here is the same model described in the help of the R package, both
 #the min and max are constrained with 0 and 1, respectively

@@ -8,16 +8,13 @@
 library(drc)
 library(plotrix)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #comparison between repetitions
 ###############################################################################
 
 #load the dataset
-myzpbo<-read.table("pbo_280317.txt",header=T,sep="\t")
+myzpbo<-read.table("data/pbo_280317.txt",header=T,sep="\t")
 
 #in order to obtain the same results than with priprobit, the Finney equivalent
 #method, we have to remove the constrain on lowerlimit and chose a log-normal 
@@ -310,8 +307,6 @@ plot(myzus.avpbo5,type="obs",add=TRUE,col="red3")
 par(op)
 
 
-
-
 #let's evaluate the different model for each clone with and without pbo####
 myzus.sspbo<-drm(dead/total~dose,weights=total,
                  data=myzpbo[myzpbo$clone==names(summary(myzpbo[,2]))[3] & 
@@ -597,7 +592,7 @@ par(op)
 
 
 #load the dataset
-myzpbo<-read.table("pbo_280317.txt",header=T,sep="\t")
+myzpbo<-read.table("data/pbo_280317.txt",header=T,sep="\t")
 myzpbo<-cbind(myzpbo,"perc"=myzpbo$dead*100/myzpbo$total)
 myzpbo<-cbind(myzpbo,"testID"=paste(myzpbo$clone,myzpbo$date))
 
@@ -752,7 +747,7 @@ DL50clonepbocor<-ED(myzus.avpbocor,50,interval="delta",reference="control")
 ###############################################################################
 
 #load the dataset
-myzpbo<-read.table("pbo_120517.txt",header=T,sep="\t")
+myzpbo<-read.table("data/pbo_120517.txt",header=T,sep="\t")
 
 
 myzus.sspbo<-drm(dead/total~dose,weights=total,
@@ -1218,7 +1213,7 @@ DL50clonepbofin<-ED(myzus.avpbofin,50,interval="delta",reference="control")
 ###############################################################################
 
 #load the dataset
-myzpbo<-read.table("pbo_070717.txt",header=T,sep="\t")
+myzpbo<-read.table("data/pbo_070717.txt",header=T,sep="\t")
 
 #for the first clone
 myzus.sspbo<-drm(dead/total~dose,weights=total,

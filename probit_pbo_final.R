@@ -9,16 +9,13 @@ library(drc)
 library(plotrix)
 library(gdata)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #Evaluating the DL50 for the different clones and different repetitions
 ###############################################################################
 
 #load the dataset
-myzpbo<-read.table("final_av_ss_pbo.txt",header=T,sep="\t")
+myzpbo<-read.table("data/final_av_ss_pbo.txt",header=T,sep="\t")
 #because some concentration were only used for adapting the pesticide dose
 #scale. It also include repetition that were flawed because of insufficient
 #number of individual for the entire repetition or because there was a problem
@@ -28,7 +25,7 @@ myzpbo<-myzpbo[myzpbo$include!="n",]
 #let's sum the number of individual tested per dose for each treatment 
 #to check the representativeness of the obtained results
 checkdat<-aggregate(cbind(dead,total)~dose+pesticide+clone,data=myzpbo,"sum")
-write.table(checkdat,file="checkdat.txt",sep="\t",row.names=FALSE)
+write.table(checkdat,file="output/checkdat.txt",sep="\t",row.names=FALSE)
 
 barplot(cloneX$total[cloneX$pesticide!="thiaclopride"])
 barplot(cloneX$dead[cloneX$pesticide!="thiaclopride"]/
@@ -2344,7 +2341,7 @@ bilan<-rbind(bilan,
                         "n min pbo"=min(checkclo[checkclo$pesticide!=
                                                    "thiaclopride",]$total)))
 bilan
-write.table(bilan,file="bilan.txt",sep="\t",row.names=FALSE)
+write.table(bilan,file="output/bilan.txt",sep="\t",row.names=FALSE)
 
 #curves for each repetition without PBO
 myzus.sspbo1<-drm(dead/total~dose,weights=total,
@@ -2547,7 +2544,7 @@ bilan2<-rbind(bilan2,
                         "n min pbo"=min(checkclo[checkclo$pesticide!=
                                                    "thiaclopride",]$total)))
 bilan2
-write.table(bilan2,file="bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
+write.table(bilan2,file="output/bilan2.txt",sep="\t",row.names=FALSE,quote=FALSE)
 
 
 
@@ -2563,7 +2560,7 @@ library(nlme)
 detach("package:drc", unload=TRUE) #otherwise it is messing with "family" !
 
 #loading the dataset
-regredat<-read.table(file="Yanisregre.dat",header=TRUE,sep="\t")
+regredat<-read.table(file="data/Yanisregre.dat",header=TRUE,sep="\t")
 
 
 #generalyzed linear mixed model with the clone identity as a random factor

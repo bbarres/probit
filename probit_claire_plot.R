@@ -8,16 +8,13 @@
 library(drc)
 library(plotrix)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #First, the plot for the Imidaclopride
 ###############################################################################
 
 #load the dataset
-imida<-read.table("imidata.txt",header=T,sep="\t")
+imida<-read.table("data/imidata.txt",header=T,sep="\t")
 
 #let's isolate the name of the clone and their genotype for the R81T resistance
 clone_gen<-imida[imida$dose==0, 1:2]
@@ -163,7 +160,7 @@ par(op)
 ###############################################################################
 
 #load the dataset
-thia<-read.table("thiadata.txt",header=T,sep="\t")
+thia<-read.table("data/thiadata.txt",header=T,sep="\t")
 
 #let's isolate the name of the clone and their genotype for the R81T resistance
 clone_gen<-thia[thia$dose==0, 1:2]

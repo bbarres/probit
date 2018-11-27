@@ -4,16 +4,13 @@
 ###############################################################################
 ###############################################################################
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #plotting the LC50 with imdaclopride against LC50 with thiaclopride
 ###############################################################################
 
 op<-par(mar=c(5.1,5.1,2.1,2.1))
-ITdata<-read.table("imida-thia.txt",header=TRUE,sep="\t")
+ITdata<-read.table("data/imida-thia.txt",header=TRUE,sep="\t")
 plot(ITdata,log="xy",pch=19,bg="black",cex=1.5,cex.lab=1.5,las=1,
      xlab=expression(paste("imidacloprid LC50 ",µg.liter^-1)),
      ylab=expression(paste("thiacloprid LC50 ",µg.liter^-1)))

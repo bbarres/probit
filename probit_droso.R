@@ -8,16 +8,13 @@
 library(drc)
 library(plotrix)
 
-#set the working directory
-setwd("~/work/Rfichiers/Githuber/probit_data")
-
 
 ###############################################################################
 #example for Drosophila suzukii resistance to Difenoconazol
 ###############################################################################
 
 #load the dataset
-droso<-read.table("Droso2.txt",header=T,sep="\t")
+droso<-read.table("data/Droso2.txt",header=T,sep="\t")
 
 #in order to obtain the same results than with priprobit, the Finney equivalent
 #method, we have to remove the constrain on lowerlimit and chose a log-normal 
