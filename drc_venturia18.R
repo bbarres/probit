@@ -16,6 +16,7 @@ ventu18<-read.table(file="data/18-venturia.txt",header=T,sep=";")
 collist<-c("forestgreen","black")
 levels(ventu18$pest_sa_id)
 
+
 ###############################################################################
 #Analysis for the boscalid
 ###############################################################################
